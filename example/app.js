@@ -8,6 +8,7 @@ window.onload = function(){
 
 	$.getJSON('../regions/australia.geojson',function(json){
 		L.geoJson(json,{
+		    clickable:false,
 		    style: function(item){
 		    	if(item.properties.type == 'stateline'){
 		    		return {
