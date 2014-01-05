@@ -1,14 +1,16 @@
 window.onload = function(){
 	// create a map in the "map" div, set the view to a given place and zoom
-	var map = L.map('map')
-		.fitBounds([
-			[-10,110],
-			[-44,155]
-		]);
+	var au = [
+		[-10,110],
+		[-44,155]
+	];
+	var allowedCountries = {};
+	var map = L.map('map',{minZoom:2})
+		.fitBounds(au);
 
-	$.getJSON('../regions/australia.geojson',function(json){
+	$.getJSON('../data/source/ne_110m_admin_0_countries.geo.json',function(json){
 		L.geoJson(json,{
-		    clickable:false,
+		    clickable:true,
 		    style: function(item){
 		    	if(item.properties.type == 'stateline'){
 		    		return {
@@ -35,10 +37,11 @@ window.onload = function(){
 		       		
 		        } else {
 		    		return {
-					    fillColor:'white',
+					    fillColor:'#fff',
 					    fillOpacity:1,
 					    fill:true,
-					    stroke:false
+					    color:'#eeeeff',
+					    weight:1
 					}
 		    	}
 		    },
@@ -47,8 +50,34 @@ window.onload = function(){
 		        	.bindLabel(feature.properties.name,{
 		        		noHide:true
 		        	});
+		    },
+		    onEachFeature: function (feature, layer) {
+		    	var name = feature.properties.name;
+		    	function ctxFillColor(){
+		    		return allowedCountries[name] ? '#ffddff' : '#fff';
+		    	}
+		    	layer.on('click',function(){
+			    	allowedCountries[name] = !allowedCountries[name];
+			    	console.log(allowedCountries[name])
+			    	layer.setStyle({
+			    		fillColor: ctxFillColor()
+			    	});
+		    	});
+
+		    	layer.on('mouseover',function(){
+		    		layer.setStyle({
+		    			fillColor: '#ffaaff'
+		    		})
+		    	})
+
+		    	layer.on('mouseout',function(){
+		    		layer.setStyle({
+		    			fillColor: ctxFillColor()
+		    		})
+		    	})
 		    }
 		}).addTo(map);
-	})
+
+	});
 
 }
