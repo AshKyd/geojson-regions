@@ -9,6 +9,7 @@
     "grunt-browserify": "~1.3.0",
     "async": "~0.2.9",
     "js-base64": "~2.1.2",
-    "filesaver.js": "~2013.1.23"
+    "filesaver.js": "~2013.1.23",
+    "topojson": "~1.4.5"
   }
 }
