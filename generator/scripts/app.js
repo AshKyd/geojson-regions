@@ -3,6 +3,7 @@
 	var leafletCountries = {};
 	var allowedCountries = {};
 	var async = require('async');
+	var filesaver = require('filesaver.js');
 	var base64 = require('js-base64').Base64;
 	var DEFAULT_FILL='#fff';
 	var SELECTED_FILL='#aaffaa';
@@ -11,12 +12,49 @@
 	var $progressBar = $('<div class="panel panel-default panel-progress"><div class="panel-heading">Loading…</div><div class="panel-body"><div class="progress progress-striped active"><div class="progress-bar"  role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0"></div></div></div></div>');
 	var maps = {};
 
-	if(!window.$ || !window.JSON){
+
+	// Ensure we have jQuery, JSON and Blob support. jQuery 2 will fail to load
+	// in older browsers, so check it.
+	if(!window.$ || !window.JSON || !window.Blob || !window.console || !window.console.log){
 		window.onload = function(){
 			document.getElementById('oldie-fallback').innerHTML = ALERT_TEXT;
 		}
 		return;
 	}
+
+	console.log(
+		'%c              •••• •••••                                  \n'+
+		'            ••••••••••••••           ••                     \n'+
+		'           •• •• ••••••••     ••           ••               \n'+
+		'         •    • •••••••••     ••            •               \n'+
+		'           ••     •••••••             •    ••••    •        \n'+
+		'       •• ••••     •••••               • ••••••••           \n'+
+		' •••  • •••  ••••  •••••       ••      ••••••••••••••••     \n'+
+		' •••••••••••••  •• •••        ••••••••••••••••••••••••••••• \n'+
+		'•••••••••••••   •   •        •••••••••••••••••••••••••••••  \n'+
+		'  •  ••••••• • •••                          •••••••   •     \n'+
+		'      •••••••• ••••   CUSTOM GEOJSON MAPS!  ••••••••        \n'+
+		'       •••••••••• •                         ••••••••        \n'+
+		'       •••••••••          •••••••••••••••••••••••  •        \n'+
+		'        •••••••           •••• •  •••••••••••••• •          \n'+
+		'         •••             ••••••••••••  •••••••••            \n'+
+		'             •           ••••••••••••   ••  ••              \n'+
+		'               •••        •• •••••••     •  •  •            \n'+
+		'               ••••••         •••••          ••   •         \n'+
+		'               •••••••        •••••               ••        \n'+
+		'                •••••         •••• •           ••••••       \n'+
+		'                ••••           ••              ••••••       \n'+
+		'                •••                                ••       \n'+
+		'               ••                                           \n'+
+		'               ••                                           \n',
+		'background: #fff; color: #68f',
+		"\nPlease don't be alarmed at HTTP errors in here. Some countries "+
+		"aren't available at lower resolutions, and this is a blunt"+
+		"tool. :)\n\n"
+	);
+	console.log(
+	)
+
 
 	var analytics = function(){
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -149,6 +187,11 @@
 				}
 			}
 
+			if(window.console && console.log){
+				console.log("Hey, thanks for playing! Please don't be alarmed by any 404s in here,"+
+					"some of the countries specified aren't available at lower resolutions.")
+			}
+
 			var features = [];
 			var downloadsComplete = 0;
 			function progressText(){
@@ -175,10 +218,11 @@
 				  "features": features
 				}
 				var jsonString = JSON.stringify(geojson);
-				var b64link = 'data:application/octet-stream;charset=utf8;base64,'+base64.encode(jsonString);
-				window.location=b64link;
-
+				var geoJsonBlob = new Blob([jsonString], {type: "application/json;charset=utf-8"});
+				filesaver(geoJsonBlob,'custom.geo.json');
 				$('.results .kb').text(Math.round(jsonString.length/1024));
+
+
 
 				$('#setup').show();
 				initMap('preview-map',geojson,{

@@ -60,7 +60,6 @@ module.exports = function(grunt) {
             },
             prod: {
                 options: {
-                    paths: ["assets/css"],
                     cleancss: true
                 },
                 files: {
