@@ -64,10 +64,6 @@
 		"aren't available at lower resolutions, and this is a blunt"+
 		"tool. :)\n\n"
 	);
-	console.log(
-	)
-
-
 
 	var progress = function(action,valuenow,max){
 		var $bw = $('.build-widget');
@@ -124,7 +120,7 @@
 		$('#setup').hide();
 
 		progress('Loading initial map&hellip;',100,100);
-		$.getJSON('data/source/ne_110m_admin_0_countries.geo.json',function(json){
+		$.getJSON('countries/110m/all.geojson',function(json){
 			progress(false);
 			initMap('map',json,{
 			    clickable:true,
@@ -188,11 +184,6 @@
 						files.push('data/countries/ne_'+resolution+'_admin_0_countries.geo.json/'+continents[continent][country]);
 					}
 				}
-			}
-
-			if(window.console && console.log){
-				console.log("Hey, thanks for playing! Please don't be alarmed by any 404s in here,"+
-					"some of the countries specified aren't available at lower resolutions.")
 			}
 
 			var features = [];
