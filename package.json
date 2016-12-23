@@ -7,10 +7,12 @@
     "example": "example"
   },
   "scripts": {
-    "generator-js": "browserify src/scripts/app.js|uglifyjs>dist/app.min.js",
-    "generator-css": "cp src/styles/*.css dist/",
-    "generator-clean": "rm -rf dist;mkdir dist",
-    "build-generator": "npm run generator-clean; npm run generator-js & npm run generator-css;wait",
+    "generator-js": "browserify generator/scripts/app.js|uglifyjs>generator/dist/app.min.js",
+    "generator-css": "cp generator/styles/*.css generator/dist/",
+    "generator-html": "cp generator/index.html generator/dist/",
+    "generator-countries": "cp countries generator/dist/ -r",
+    "generator-clean": "rm -rf generator/dist;mkdir generator/dist",
+    "build-generator": "npm run generator-clean; npm run generator-js & npm run generator-css & npm run generator-html & npm run generator-countries;wait",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
