@@ -7,7 +7,7 @@
     "example": "example"
   },
   "scripts": {
-    "generator-js": "browserify generator/scripts/app.js|uglifyjs>generator/dist/app.min.js",
+    "generator-js": "node node_modules/browserify/bin/cmd.js generator/scripts/app.js|node node_modules/uglifyjs/bin/uglifyjs>generator/dist/app.min.js",
     "generator-css": "cp generator/styles/*.css generator/dist/",
     "generator-html": "cp generator/index.html generator/dist/",
     "generator-countries": "cp countries generator/dist/ -r",
