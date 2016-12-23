@@ -1,0 +1,32 @@
+{
+  "name": "geojson-regions",
+  "version": "1.0.0",
+  "description": "Countries of the world in GeoJSON format",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "generator-js": "browserify src/scripts/app.js|uglifyjs>dist/app.min.js",
+    "generator-css": "cp src/styles/*.css dist/",
+    "generator-clean": "rm -rf dist;mkdir dist",
+    "build-generator": "npm run generator-clean; npm run generator-js & npm run generator-css;wait",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AshKyd/geojson-regions.git"
+  },
+  "author": "Ash Kyd <ash@kyd.com.au>",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/AshKyd/geojson-regions/issues"
+  },
+  "homepage": "https://github.com/AshKyd/geojson-regions#readme",
+  "devDependencies": {
+    "async": "^2.1.4",
+    "js-base64": "^2.1.9",
+    "topojson": "^2.2.0",
+    "filesaver.js": "^0.2.0"
+  }
+}

@@ -8,7 +8,7 @@ window.onload = function(){
 	var map = L.map('map',{minZoom:2})
 		.fitBounds(au);
 
-	$.getJSON('../data/source/ne_110m_admin_0_countries.geo.json',function(json){
+	$.getJSON('../countries/110m/all.geojson',function(json){
 		L.geoJson(json,{
 		    clickable:true,
 		    style: function(item){
@@ -34,7 +34,7 @@ window.onload = function(){
 			        	fillColor:"#aaa",
 			        	radius: 2 / item.properties.importance
 		       		}
-		       		
+
 		        } else {
 		    		return {
 					    fillColor:'#fff',
