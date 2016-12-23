@@ -12,7 +12,7 @@
     "generator-html": "cp generator/index.html generator/dist/",
     "generator-countries": "cp countries generator/dist/ -r",
     "generator-clean": "rm -rf generator/dist;mkdir generator/dist",
-    "build-generator": "npm run generator-clean; npm run generator-js && npm run generator-css && npm run generator-html",
+    "build-generator": "npm run generator-clean; npm run generator-js & npm run generator-css & npm run generator-html & npm run generator-countries;wait",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

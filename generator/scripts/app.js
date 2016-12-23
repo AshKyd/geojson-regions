@@ -1,5 +1,5 @@
 (function(){
-	var continents = require('./countries.js');
+	var continents = require('../../countries/10m/index');
 	var leafletCountries = {};
 	var allowedCountries = {};
 	var async = require('async');
@@ -181,7 +181,7 @@
 			for(var country in allowedCountries){
 				for(var continent in continents){
 					if(allowedCountries[country] && continents[continent][country]){
-						files.push('data/countries/ne_'+resolution+'_admin_0_countries.geo.json/'+continents[continent][country]);
+						files.push('countries/'+resolution+'/'+continents[continent][country]);
 					}
 				}
 			}
@@ -213,7 +213,7 @@
 				}
 				var jsonString = JSON.stringify(geojson);
 				var geoJsonBlob = new Blob([jsonString], {type: "application/json;charset=utf-8"});
-				filesaver(geoJsonBlob,'custom.geo.json');
+				filesaver.saveAs(geoJsonBlob,'custom.geo.json');
 				$('.results .kb').text(Math.round(jsonString.length/1024));
 
 
