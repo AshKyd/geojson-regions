@@ -31,13 +31,24 @@ you can do so by running `go.sh` in the repo root.
 If you notice the repo is out of date, please feel free to make a pull request.
 
 Note: you require gdal installed on your system (ogr2ogr command converts
-shapediles to geojson).
+shapefiles to geojson).
+
+Testing
+-------
+Really loose unit tests are in the `test/` folder. These ensure the data hasn't
+deviated too much from sensibility between updates.
+
+```
+npm install
+npm test
+```
+
 
 Contributing
 ------------
 
 The only data changes I'll accept in this repo are those fetched from
-naturalearthdata.com. Please don't make a pull request with nodified data.
+naturalearthdata.com. Please don't make a pull request with modified data.
 
 If you can improve the build tools, or have a new transformation you want to add
 go for it!
