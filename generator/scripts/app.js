@@ -237,7 +237,7 @@
 
 			// Download files two at a time.
 			progress(progressText(),0,files.length);
-			async.eachLimit(files,3,action,complete);
+			async.eachLimit(files,10,action,complete);
 		});
 
 		$('.continents input').change(function(){
