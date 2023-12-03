@@ -1,7 +1,13 @@
-FROM nginx:stable-alpine
-RUN rm -rf /etc/nginx/conf.d/default.conf
-COPY docker/default.conf /etc/nginx/conf.d/default.conf
-COPY docker/nginx.conf /etc/nginx/nginx.conf
-RUN apk update && apk upgrade
-COPY public /usr/share/nginx/html
-RUN  chmod o+r -R /usr/share/nginx/html
+FROM busybox:1.35
+
+# Create a non-root user to own the files and run our server
+RUN adduser -D static
+USER static
+WORKDIR /home/static
+
+# Copy the static website
+# Use the .dockerignore file to control what ends up inside the image!
+COPY public .
+
+# Run BusyBox httpd
+CMD ["busybox", "httpd", "-f", "-v", "-p", "80"]
