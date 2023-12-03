@@ -1,0 +1,210 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>GeoJSON Maps of the globe</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="prefetch" href="/countries/10m/index.json" />
+    <link rel="prefetch" href="/countries/110m/all.geojson" />
+
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;200;300;400;600;900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script type="text/javascript" src="lib/d3.min.js" defer=""></script>
+    <script type="module" src="app.js" defer=""></script>
+  </head>
+
+  <body>
+    <div class="page-header mb">
+      <h1 class="page-header__heading">Download GeoJSON countries</h1>
+      <p class="page-header__intro">Vector maps</p>
+    </div>
+    <div class="app mb">
+      <div class="app-header">
+        <h2>Build your map</h2>
+      </div>
+      <div class="responsive-app__container">
+        <div class="responsive-app">
+          <div class="col-md-4 build-col">
+            <div class="build-widget">
+              <p class="p">
+                Tap the map to select your countries or choose from the presets.
+              </p>
+              <div class="build-controls">
+                <button class="btn btn-primary btn-lg build">
+                  Build Custom GeoJSON
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 resolution">
+            <h3>Resolution</h3>
+            <p class="p small">How detailed does your map need to be?</p>
+
+            <label class="radio selectagon">
+              <input
+                type="radio"
+                class="selectagon__input"
+                name="resolution"
+                id="resolution-low"
+                value="110m"
+                checked=""
+              />
+              <div class="selectagon__text">
+                <span class="selectagon__main">Low resolution</span>
+                <span class="small">(110 metre, smallest file)</span>
+              </div>
+            </label>
+
+            <label class="radio selectagon">
+              <input
+                type="radio"
+                class="selectagon__input"
+                name="resolution"
+                id="resolution-medium"
+                value="50m"
+              />
+              <div class="selectagon__text">
+                <span class="selectagon__main">Medium resolution</span>
+                <span class="small">(50 metre)</span>
+              </div>
+            </label>
+
+            <label class="radio selectagon">
+              <input
+                type="radio"
+                class="selectagon__input"
+                name="resolution"
+                id="resolution-high"
+                value="10m"
+              />
+              <div class="selectagon__text">
+                <span class="selectagon__main">High resolution</span>
+                <span class="small">(10 metre, largest file)</span>
+              </div>
+            </label>
+          </div>
+
+          <div class="col-md-4 continents">
+            <h3>Regions</h3>
+            <p class="p small">Choose from some preset regions</p>
+            <div class="regions">
+              <label class="checkbox selectagon region">
+                <input type="checkbox" class="selectagon__input" value="all" />
+
+                <span class="selectagon__main">All</span>
+              </label>
+
+              <label class="checkbox selectagon region">
+                <input
+                  type="checkbox"
+                  class="selectagon__input"
+                  value="North America"
+                />
+
+                <span class="selectagon__main">North America</span>
+              </label>
+
+              <label class="checkbox selectagon region">
+                <input type="checkbox" class="selectagon__input" value="Asia" />
+
+                <span class="selectagon__main">Asia</span></label
+              >
+
+              <label class="checkbox selectagon region">
+                <input
+                  type="checkbox"
+                  class="selectagon__input"
+                  value="South America"
+                />
+                <span class="selectagon__main">South America</span>
+              </label>
+
+              <label class="checkbox selectagon region">
+                <input
+                  type="checkbox"
+                  class="selectagon__input"
+                  value="Africa"
+                />
+
+                <span class="selectagon__main">Africa</span>
+              </label>
+
+              <label class="checkbox selectagon region">
+                <input
+                  type="checkbox"
+                  class="selectagon__input"
+                  value="Europe"
+                />
+
+                <span class="selectagon__main">Europe</span>
+              </label>
+
+              <label class="checkbox selectagon region">
+                <input
+                  type="checkbox"
+                  class="selectagon__input"
+                  value="Oceania"
+                />
+
+                <span class="selectagon__main">Oceania</span>
+              </label>
+
+              <label class="checkbox selectagon region">
+                <input
+                  type="checkbox"
+                  class="selectagon__input"
+                  value="Other"
+                />
+
+                <span class="selectagon__main">Other</span>
+              </label>
+            </div>
+          </div>
+          <div class="map">
+            <svg viewBox="0 20 960 460"></svg>
+          </div>
+        </div>
+        <div
+          class="responsive-app__scrim responsive-app__scrim--hidden"
+          style="display: flex"
+        >
+          <div class="progress__container">
+            <div id="loadinglabel">Building your map:</div>
+            <div class="progress__outer">
+              <div
+                role="progressbar"
+                aria-labelledby="loadinglabel"
+                aria-valuenow="23"
+                class="progress__inner"
+                style="width: 100%"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="page-footer">
+      <div class="row">
+        <div class="col-md-6">
+          <p class="p p-narrow">
+            These maps are sourced from
+            <a href="http://naturalearthdata.com">Natural Earth</a> and are in
+            the public domain, so you are free to use them in any way without
+            attribution.
+          </p>
+          <p class="p">
+            Site © 2023 <a href="https://ash.ms">Ash Kyd</a>.
+            <a href="https://github.com/AshKyd/geojson-regions">GitHub.</a>
+          </p>
+        </div>
+        <div class="col-md-6"></div>
+      </div>
+    </footer>
+  </body>
+</html>

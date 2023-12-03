@@ -3,17 +3,10 @@
   "version": "1.0.0",
   "description": "Countries of the world in GeoJSON format",
   "main": "index.js",
-  "directories": {
-    "example": "example"
-  },
   "scripts": {
-    "generator-js": "browserify generator/scripts/app.js|uglifyjs>generator/dist/app.min.js",
-    "generator-css": "cp generator/styles/*.css generator/dist/",
-    "generator-html": "cp generator/index.html generator/dist/",
-    "generator-countries": "cp countries generator/dist/ -r",
-    "generator-clean": "rm -rf generator/dist;mkdir generator/dist",
-    "build-generator": "npm run generator-clean; npm run generator-js & npm run generator-css & npm run generator-html & npm run generator-countries;wait",
-    "test": "mocha test/** --bail"
+    "build-generator": "rm -rf dist;cp -r public dist; cp -r countries dist/",
+    "test": "mocha test/** --bail",
+    "update-data": "./go.sh"
   },
   "repository": {
     "type": "git",
@@ -26,12 +19,6 @@
   },
   "homepage": "https://github.com/AshKyd/geojson-regions#readme",
   "devDependencies": {
-    "async": "^2.1.4",
-    "browserify": "^13.3.0",
-    "filesaver.js": "^0.2.0",
-    "js-base64": "^2.1.9",
-    "mocha": "^3.4.2",
-    "topojson": "^2.2.0",
-    "uglify-js": "^3.0.25"
+    "mocha": "^10.2.0"
   }
 }

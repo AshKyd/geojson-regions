@@ -2,3 +2,4 @@ node_modules
 dist
 /local
 go-local.sh
+.DS_Store
