@@ -1,9 +1,9 @@
 processFile(){
 	name=$1
 	url=$2
-	rm -rf countries/$name
-	mkdir -p countries/$name/tmp
-	cd countries/$name/tmp
+	rm -rf public/countries/$name
+	mkdir -p public/countries/$name/tmp
+	cd public/countries/$name/tmp
 	wget $url;
 	unzip *.zip;
 	rm *.zip;
@@ -11,7 +11,7 @@ processFile(){
 	cd ..;
 	rm tmp -rf;
 	node ../../parseCountries.js all.geojson
-	cd ../../
+	cd ../../../
 }
 # 1:10 countries
 processFile 10m https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/cultural/ne_10m_admin_0_countries.zip
@@ -22,4 +22,3 @@ processFile 50m https://www.naturalearthdata.com/http//www.naturalearthdata.com/
 # 1:110 countries
 processFile 110m https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_countries.zip
 
-npm test

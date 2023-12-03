@@ -1,8 +1,12 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <title>GeoJSON Maps of the globe</title>
-    <meta name="description" content="" />
+    <meta
+      name="description"
+      content="Customise and download free vector maps in GeoJSON format for your web apps and visualisations."
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="prefetch" href="/countries/10m/index.json" />
     <link rel="prefetch" href="/countries/110m/all.geojson" />
@@ -169,10 +173,7 @@
             <svg viewBox="0 20 960 460"></svg>
           </div>
         </div>
-        <div
-          class="responsive-app__scrim responsive-app__scrim--hidden"
-          style="display: flex"
-        >
+        <div class="responsive-app__scrim" style="display: none">
           <div class="progress__container">
             <div id="loadinglabel">Building your map:</div>
             <div class="progress__outer">
@@ -193,13 +194,20 @@
       <div class="row">
         <div class="col-md-6">
           <p class="p p-narrow">
+            Customise and download free vector maps in GeoJSON format for your
+            web apps and visualisations.
+          </p>
+          <p class="p p-narrow">
             These maps are sourced from
             <a href="http://naturalearthdata.com">Natural Earth</a> and are in
             the public domain, so you are free to use them in any way without
-            attribution.
+            attribution. Natural Earth shows de facto boundaries by default
+            according to who controls the territory, versus de jure. Optional
+            point-of-view (POV) variants are available for several dozen
+            countries on their website.
           </p>
           <p class="p">
-            Site © 2023 <a href="https://ash.ms">Ash Kyd</a>.
+            Site © 2023 <a href="https://ash.ms">Ash Kyd</a>. Contribute on
             <a href="https://github.com/AshKyd/geojson-regions">GitHub.</a>
           </p>
         </div>
