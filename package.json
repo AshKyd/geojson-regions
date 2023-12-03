@@ -4,7 +4,6 @@
   "description": "Countries of the world in GeoJSON format",
   "main": "index.js",
   "scripts": {
-    "build-generator": "rm -rf dist;cp -r public dist; cp -r countries dist/",
     "test": "mocha test/** --bail",
     "update-data": "./go.sh"
   },
