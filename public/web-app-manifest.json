@@ -1,0 +1,15 @@
+{
+  "name": "GeoJSON Maps",
+  "short_name": "GeoJSON Maps",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "Customise and download free vector maps in GeoJSON format for your web apps and visualisations.",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
