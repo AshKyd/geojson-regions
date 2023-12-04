@@ -11,9 +11,15 @@ function toggleCountry(id, status) {
   }
 }
 
+// To take advantage of rel=prefetch, we must specify the following:
+const preloadFetchOpts = { credentials: "include", mode: "no-cors" };
 const [index10, geojson] = await Promise.all([
-  fetch("/countries/10m/index.json").then((res) => res.json()),
-  fetch("/countries/110m/all.geojson").then((res) => res.json()),
+  fetch("/countries/10m/index.json", preloadFetchOpts).then((res) =>
+    res.json()
+  ),
+  fetch("/countries/110m/all.geojson", preloadFetchOpts).then((res) =>
+    res.json()
+  ),
 ]);
 // Make map
 (async () => {
