@@ -1,0 +1,19 @@
+services:
+  web:
+    container_name: geojson-maps.kyd.au
+    build: .
+    restart: always
+    volumes:
+      - ./data:/data
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.geojsonregions.rule=Host(`geojson-maps.kyd.au`)
+      - traefik.http.routers.geojsonregions.entrypoints=websecure
+      - traefik.http.routers.geojsonregions.tls.certresolver=le
+      - traefik.http.services.geojsonregions.loadbalancer.server.port=80
+      - traefik.docker.network=traefik_default
+    networks:
+      - traefik_default
+networks:
+  traefik_default:
+    external: true
