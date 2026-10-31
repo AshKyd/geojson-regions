@@ -223,10 +223,15 @@
     color: white;
     pointer-events: none;
   }
+  /* One colour family in steps of intensity: hover gives a softer preview of "selected"... */
   path:hover {
     fill: var(--map-link-hover);
   }
   path.selected {
     fill: var(--map-link-selected);
+  }
+  /* ...and hovering something already selected strengthens it, so the two hovers differ. */
+  path.selected:hover {
+    fill: var(--map-link-selected-hover);
   }
 </style>

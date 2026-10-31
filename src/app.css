@@ -264,8 +264,9 @@ table {
   --map-background: saturate(140%) brightness(90%) blur(5rem);
   --map-link: #ffffff;
   --map-link-stroke: #eee;
-  --map-link-hover: #ffffaa;
+  --map-link-hover: #d9ffd9;
   --map-link-selected: #aaffaa;
+  --map-link-selected-hover: #66ee66;
   --button-background: radial-gradient(ellipse at bottom, #20fffb, #185dbe);
   --button-shadow: 0 0 0.2rem black, 0 0 0.2rem rgb(0, 73, 140),
     0 0 0.5rem rgb(0, 73, 140);
@@ -291,8 +292,9 @@ table {
     --map-background: saturate(140%) brightness(70%) blur(5rem);
     --map-link: #ffffff33;
     --map-link-stroke: #336;
-    --map-link-hover: #ffffaa;
+    --map-link-hover: #ffffff66;
     --map-link-selected: #ffffff99;
+    --map-link-selected-hover: #ffffffcc;
     --button-background: radial-gradient(ellipse at bottom, #5f41e2, #231557);
     --button-shadow: 0 0 0.2rem black, 0 0 0.2rem rgb(0, 73, 140),
       0 0 0.5rem rgb(0, 73, 140);
