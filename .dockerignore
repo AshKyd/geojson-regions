@@ -1,0 +1,6 @@
+node_modules
+scripts/node_modules
+local
+build
+.svelte-kit
+.git

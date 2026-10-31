@@ -1,0 +1,27 @@
+{
+	admin off
+	auto_https off
+	storage file_system /tmp/caddy
+}
+
+:8080 {
+	root * /srv
+
+	# Serve the build-time .br files; fall back to zstd/gzip for anything else.
+	encode zstd gzip
+	file_server {
+		precompressed br
+	}
+
+	# Only x.geojson.br is stored. Serve it under the .geojson URL, already Brotli-encoded.
+	@geojson path *.geojson
+	handle @geojson {
+		rewrite * {path}.br
+		header Content-Type application/json
+		header Content-Encoding br
+		header Vary Accept-Encoding
+		file_server
+	}
+	header /countries/* Cache-Control "public, max-age=86400"
+	header /assets/* Cache-Control "public, max-age=31536000, immutable"
+}

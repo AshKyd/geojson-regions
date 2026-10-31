@@ -22,27 +22,40 @@ This stuff is fairly subjective. Natural earth states:
 > Palestine as part of Israel. Please feel free to mashup our countries and
 > disputed areas themes to match your particular political outlook.
 
+Point of view
+-------------
+
+Natural Earth also publishes de jure outlines for several dozen countries and
+alliances, at 10m only. These are stored under `static/countries/pov/<code>/10m`
+(for example `pov/ind/10m`). The list of codes and names is
+`static/countries/povs.json`.
+
 Fetching the latest data
 ------------------------
 
-I'm aiming to keep this one up to date, but if you need to fetch the latest data
-you can do so by running `go.sh` in the repo root.
+Requires Docker. From this directory:
 
-If you notice the repo is out of date, please feel free to make a pull request.
+```
+npm run update-data
+```
 
-Note: you require gdal installed on your system (ogr2ogr command converts
-shapefiles to geojson).
+This runs the `countries-data` service in `docker-compose.yml`, which downloads
+every outline from Natural Earth, writes one GeoJSON file per country, an
+`index.json` and an `all.geojson` for each set, and writes a Brotli (quality 11)
+`.br` copy beside each file. Output goes to `static/countries`.
 
-Testing
--------
-Really loose unit tests are in the `test/` folder. These ensure the data hasn't
-deviated too much from sensibility between updates.
+Development
+-----------
 
 ```
 npm install
+npm run dev
 npm test
+npm run build
 ```
 
+`npm run build` also Brotli-compresses everything in `build`. The production
+image uses Caddy, which serves the `.br` files as they are.
 
 Contributing
 ------------

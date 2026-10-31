@@ -1,23 +1,62 @@
 {
-  "name": "geojson-regions",
-  "version": "1.0.0",
-  "description": "Countries of the world in GeoJSON format",
-  "main": "index.js",
-  "scripts": {
-    "test": "mocha test/** --bail",
-    "update-data": "./go.sh"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AshKyd/geojson-regions.git"
-  },
-  "author": "Ash Kyd <ash@kyd.com.au>",
-  "license": "CC0-1.0",
-  "bugs": {
-    "url": "https://github.com/AshKyd/geojson-regions/issues"
-  },
-  "homepage": "https://github.com/AshKyd/geojson-regions#readme",
-  "devDependencies": {
-    "mocha": "^10.2.0"
-  }
+	"name": "geojson-regions",
+	"version": "1.0.0",
+	"description": "Countries of the world in GeoJSON format",
+	"private": true,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/AshKyd/geojson-regions.git"
+	},
+	"author": "Ash Kyd <ash@kyd.com.au>",
+	"license": "CC0-1.0",
+	"bugs": {
+		"url": "https://github.com/AshKyd/geojson-regions/issues"
+	},
+	"homepage": "https://github.com/AshKyd/geojson-regions#readme",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "NODE_OPTIONS=--disable-warning=ExperimentalWarning vite build && node scripts/precompress.ts build",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync || echo ''",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"lint": "prettier --check . && eslint .",
+		"format": "prettier --write .",
+		"test": "vitest run",
+		"update-data": "docker compose run --rm --build countries-data && npm run compress-geojson",
+		"compress-geojson": "node scripts/compress-geojson.ts static/countries",
+		"missing-low-res": "node scripts/missing-from-low-res.ts"
+	},
+	"devDependencies": {
+		"@eslint/js": "^10.0.1",
+		"@sveltejs/adapter-static": "^4.0.1",
+		"@sveltejs/kit": "^3.0.0",
+		"@sveltejs/vite-plugin-svelte": "^7.2.0",
+		"@types/d3-geo": "^3.1.0",
+		"@types/d3-selection": "^3.0.12",
+		"@types/d3-zoom": "^3.0.9",
+		"@types/node": "^24",
+		"async": "^3.2.6",
+		"d3-geo": "^3.1.1",
+		"d3-selection": "^3.0.0",
+		"d3-zoom": "^3.0.0",
+		"eslint": "^10.4.1",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-svelte": "^3.19.0",
+		"globals": "^17.6.0",
+		"prettier": "^3.8.3",
+		"prettier-plugin-svelte": "^4.1.0",
+		"svelte": "^5.57.2",
+		"svelte-akui": "github:ashkyd/svelte-akui",
+		"svelte-check": "^4.6.0",
+		"typescript": "^6.0.3",
+		"typescript-eslint": "^8.60.1",
+		"vite": "^8.3.0",
+		"vitest": "^5.0.5"
+	},
+	"imports": {
+		"#lib": "./src/lib/index.js",
+		"#lib/*": "./src/lib/*"
+	}
 }

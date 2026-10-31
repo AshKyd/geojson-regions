@@ -1,0 +1,10 @@
+{
+  "name": "geojson-regions-scripts",
+  "private": true,
+  "type": "module",
+  "description": "Downloads and processes the Natural Earth country outlines",
+  "dependencies": {
+    "async": "^3.2.6",
+    "jsts": "^2.12.1"
+  }
+}

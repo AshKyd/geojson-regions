@@ -1,0 +1,16 @@
+/** How far the map can be zoomed in. 1 is the whole world. */
+export const MAX_ZOOM = 12;
+
+/**
+ * Decides which input starts a pan or zoom on the map.
+ * One-finger touches are ignored so a swipe over the map scrolls the page instead of
+ * trapping it; panning and pinching need two fingers. Mouse drag and the wheel always work.
+ * Ctrl-wheel is how trackpads report a pinch, so it's allowed too (d3's default blocks other ctrl events).
+ */
+export const allowsMapGesture = (event: Event) => {
+  if (event.type.startsWith("touch")) {
+    return (event as TouchEvent).touches.length >= 2;
+  }
+  if (event.type === "wheel") return true;
+  return !(event as MouseEvent).ctrlKey && !(event as MouseEvent).button;
+};

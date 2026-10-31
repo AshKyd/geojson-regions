@@ -1,7 +1,14 @@
-FROM nginx:stable-alpine
-RUN rm -rf /etc/nginx/conf.d/default.conf
-COPY docker/default.conf /etc/nginx/conf.d/default.conf
-COPY docker/nginx.conf /etc/nginx/nginx.conf
-RUN apk update && apk upgrade
-COPY public /usr/share/nginx/html
-RUN  chmod o+r -R /usr/share/nginx/html
+FROM node:25-alpine AS build
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN apk add --no-cache git && npm ci --no-audit --no-fund
+COPY . .
+RUN npm run build
+
+# Caddy serves the pre-compressed .br files directly, which nginx can't do without a module.
+FROM caddy:2-alpine
+COPY docker/Caddyfile /etc/caddy/Caddyfile
+COPY --from=build /app/build /srv
+RUN chmod -R o+rX /srv
+USER nobody
+EXPOSE 8080
