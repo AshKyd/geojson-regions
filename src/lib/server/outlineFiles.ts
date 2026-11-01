@@ -11,9 +11,30 @@ import { NATURAL_EARTH_SLUG } from '#lib/constants.ts';
 export const countriesDirectory = resolvePath('static/countries');
 const brotliDecompressAsync = promisify(brotliDecompress);
 
-export const readText = async (path: string) =>
-	readFile(path, 'utf8').catch(async () =>
-		(await brotliDecompressAsync(await readFile(`${path}.br`))).toString('utf8')
+/**
+ * Prerendering asks for thousands of outlines at once (every point of view times every country),
+ * and the big 10m ones decompress to several MB each. Unbounded, they all sit in memory together
+ * and the build is killed, so only a few are read at a time and the rest wait their turn.
+ */
+const MAX_CONCURRENT_READS = 8;
+const waitingReads: Array<() => void> = [];
+let activeReads = 0;
+
+const withReadSlot = async <T>(read: () => Promise<T>) => {
+	if (activeReads >= MAX_CONCURRENT_READS)
+		await new Promise<void>((release) => waitingReads.push(release));
+	activeReads++;
+	return read().finally(() => {
+		activeReads--;
+		waitingReads.shift()?.();
+	});
+};
+
+export const readText = (path: string) =>
+	withReadSlot(() =>
+		readFile(path, 'utf8').catch(async () =>
+			(await brotliDecompressAsync(await readFile(`${path}.br`))).toString('utf8')
+		)
 	);
 
 export const readJson = async <T>(path: string) => JSON.parse(await readText(path)) as T;
