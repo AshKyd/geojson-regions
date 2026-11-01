@@ -48,6 +48,7 @@
 		"prettier": "^3.8.3",
 		"prettier-plugin-svelte": "^4.1.0",
 		"sharp": "^0.34.0",
+		"sitemap": "^10.0.0",
 		"svelte": "^5.57.2",
 		"svelte-akui": "github:ashkyd/svelte-akui",
 		"svelte-check": "^4.6.0",

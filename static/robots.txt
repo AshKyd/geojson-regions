@@ -1,3 +1,5 @@
 # allow crawling everything by default
 User-agent: *
 Disallow:
+
+Sitemap: https://geojson-maps.kyd.au/sitemap.xml

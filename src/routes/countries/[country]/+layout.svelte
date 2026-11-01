@@ -36,6 +36,19 @@
 		shown.slug === NATURAL_EARTH_SLUG ? country.code : `${country.code}-${shown.slug}`
 	);
 
+	const isDeFacto = $derived(shown.slug === NATURAL_EARTH_SLUG);
+	/** Names the graphic by what this page is for: one country, in one point of view. */
+	const mapTitle = $derived(
+		isDeFacto
+			? `Map of ${country.name} (de facto borders)`
+			: `Map of ${country.name} according to ${shown.name}`
+	);
+	const mapDescription = $derived(
+		isDeFacto
+			? `${country.name} highlighted among its neighbouring countries, with borders drawn as Natural Earth shows them: according to who controls the territory. Hover a neighbour to see its name.`
+			: `${country.name} highlighted among its neighbouring countries, with its borders drawn according to the ${shown.name} point of view. Hover a neighbour to see its name.`
+	);
+
 	/** The prerendered outline for the point of view on screen; the default one lives under the country. */
 	const svgHref = $derived(
 		pov
@@ -66,7 +79,15 @@
 			On wide screens: the map over the points of view on the left, and one tall side column
 			(description, then download) on the right. Stacked on narrow screens.
 		-->
-		<div class="map"><CountryShape {map} target={country} shapeKey={shown.slug} /></div>
+		<div class="map">
+			<CountryShape
+				{map}
+				target={country}
+				shapeKey={shown.slug}
+				title={mapTitle}
+				description={mapDescription}
+			/>
+		</div>
 		<!-- Empty (and hidden) when the country has no other points of view. -->
 		<div class="cell details">{@render children()}</div>
 		<div class="cell side">
@@ -75,33 +96,33 @@
 			{/if}
 			<section class="download">
 				<h3>Download {country.name} borders</h3>
-			<p class="p">
-				Download {shown.slug === NATURAL_EARTH_SLUG
-					? `${country.name} de-facto borders`
-					: `${country.name} according to ${shown.name}`}
-				in geojson or svg format to use in your own projects
-			</p>
-			<div class="download-buttons">
-				<Button
-					variant="accent"
-					size="large"
-					icon="filetype-json"
-					iconPosition="left"
-					href="{outlinesPath}/{country.code}.geojson"
-					download="{fileBase}.geojson"
-				>
-					Download GeoJSON
-				</Button>
-				<Button
-					size="large"
-					icon="filetype-svg"
-					iconPosition="left"
-					href={svgHref}
-					download="{fileBase}.svg"
-				>
-					Download SVG
-				</Button>
-			</div>
+				<p class="p">
+					Download {shown.slug === NATURAL_EARTH_SLUG
+						? `${country.name} de-facto borders`
+						: `${country.name} according to ${shown.name}`}
+					in geojson or svg format to use in your own projects
+				</p>
+				<div class="download-buttons">
+					<Button
+						variant="accent"
+						size="large"
+						icon="filetype-json"
+						iconPosition="left"
+						href="{outlinesPath}/{country.code}.geojson"
+						download="{fileBase}.geojson"
+					>
+						Download GeoJSON
+					</Button>
+					<Button
+						size="large"
+						icon="filetype-svg"
+						iconPosition="left"
+						href={svgHref}
+						download="{fileBase}.svg"
+					>
+						Download SVG
+					</Button>
+				</div>
 			</section>
 		</div>
 	</div>

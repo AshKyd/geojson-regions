@@ -14,9 +14,13 @@
 		target: { code: string; name: string };
 		/** Identifies the point of view on screen; when it changes the old map fades out and the new one in. */
 		shapeKey: string;
+		/** Short name of the graphic: the country and the point of view it is drawn from. */
+		title: string;
+		/** What the graphic shows, for screen readers and search engines; says nothing about the geography itself. */
+		description: string;
 	}
 
-	let { map, target, shapeKey }: Props = $props();
+	let { map, target, shapeKey, title, description }: Props = $props();
 	/** Unique per instance, so the mask below can't clash with another on the page. */
 	const maskId = $props.id();
 
@@ -49,10 +53,13 @@
 			<svg
 				viewBox="0 0 {width} {height}"
 				role="img"
-				aria-label="{target.name} and its neighbours"
+				aria-labelledby="{maskId}-{shapeKey}-title"
+				aria-describedby="{maskId}-{shapeKey}-desc"
 				in:fade={{ duration: fadeDuration }}
 				out:fade={{ duration: fadeDuration }}
 			>
+				<title id="{maskId}-{shapeKey}-title">{title}</title>
+				<desc id="{maskId}-{shapeKey}-desc">{description}</desc>
 				<!--
 					Borders are masked to the outside of the country rather than just drawn under its fill:
 					the fill is see-through in dark mode, so anything beneath it would still show. Strokes

@@ -26,3 +26,6 @@ vite.config.ts.timestamp-*
 /local
 scripts/node_modules
 go-local.sh
+
+# Core dumps
+core
