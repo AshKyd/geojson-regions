@@ -7,6 +7,9 @@
 :8080 {
 	root * /srv
 
+	# Pages are prerendered as /countries.html, /countries/arg.html and so on, so serve them at clean URLs.
+	try_files {path} {path}.html
+
 	# Serve the build-time .br files; fall back to zstd/gzip for anything else.
 	encode zstd gzip
 	file_server {
@@ -22,6 +25,29 @@
 		header Vary Accept-Encoding
 		file_server
 	}
+	handle_errors {
+		rewrite * /404.html
+		file_server {
+			precompressed br
+		}
+	}
+
+	# Hotlink protection for the outline SVGs: a request that names another site as its Referer is
+	# refused. No Referer at all (direct links, downloads, privacy settings) is still allowed.
+	@svgHotlink {
+		path_regexp ^/countries/.+/outline\.svg$
+		header Referer *
+		not header_regexp Referer ^https?://(geojson-maps\.kyd\.au|localhost)(:\d+)?(/|$)
+	}
+	respond @svgHotlink 403
+
+	# The prerendered outline SVGs are plain files, so make them download here, named like the site's
+	# buttons do: /countries/CHN/outline.svg -> CHN.svg, /countries/CHN/arg/outline.svg -> CHN-arg.svg.
+	@defaultSvg path_regexp defaultSvg ^/countries/([^/]+)/outline\.svg$
+	header @defaultSvg Content-Disposition `attachment; filename="{re.defaultSvg.1}.svg"`
+	@povSvg path_regexp povSvg ^/countries/([^/]+)/([^/]+)/outline\.svg$
+	header @povSvg Content-Disposition `attachment; filename="{re.povSvg.1}-{re.povSvg.2}.svg"`
+
 	header /countries/* Cache-Control "public, max-age=86400"
 	header /assets/* Cache-Control "public, max-age=31536000, immutable"
 }

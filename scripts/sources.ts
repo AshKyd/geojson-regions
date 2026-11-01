@@ -41,7 +41,6 @@ export const POINTS_OF_VIEW: Record<string, string> = {
   sau: "Saudi Arabia",
   esp: "Spain",
   swe: "Sweden",
-  tlc: "Top-level countries",
   tur: "Turkey",
   twn: "Taiwan",
   gbr: "United Kingdom",

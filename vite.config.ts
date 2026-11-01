@@ -17,7 +17,16 @@ export default defineConfig({
 			},
 
 			// Fully prerendered; Caddy serves the output, including the pre-compressed .br files.
-			adapter: adapter({ fallback: '404.html' })
+			adapter: adapter({ fallback: '404.html' }),
+
+			prerender: {
+				// Outlines are committed only as .geojson.br, which the crawler can't see under the .geojson
+				// URL the pages link to. Caddy and the dev server serve those; anything else 404ing is a real error.
+				handleHttpError: ({ path, message }) => {
+					if (path.endsWith('.geojson')) return;
+					throw new Error(message);
+				}
+			}
 		})
 	]
 });

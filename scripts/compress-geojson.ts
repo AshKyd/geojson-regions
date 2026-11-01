@@ -1,15 +1,17 @@
 import { readdir, rm, stat, readFile, writeFile } from "node:fs/promises";
 import { availableParallelism } from "node:os";
 import { join } from "node:path";
+import { constants } from "node:zlib";
 import { mapLimit } from "async";
 import { brotliAt } from "./precompress.ts";
 
 /**
- * Quality 9 is much faster than 11 (the best part of an hour over ~9,000 files, versus minutes).
- * On a sample of six large 10m countries the output was about 14% larger. Pass 11 as the second
- * argument for the smallest files, e.g. `node scripts/compress-geojson.ts static/countries 11`.
+ * Maximum quality (11): the smallest files. It is slow (the best part of an hour over ~9,000 files),
+ * but runs rarely and `isUpToDate` skips files already compressed. Pass a lower quality as the
+ * second argument for a quicker run, e.g. `node scripts/compress-geojson.ts static/countries 9`
+ * (about 14% larger on large 10m countries).
  */
-const DEFAULT_QUALITY = 9;
+const DEFAULT_QUALITY = constants.BROTLI_MAX_QUALITY;
 
 /** Recursively lists every `.geojson` file under a directory. */
 const listGeojson = async (directory: string): Promise<string[]> => {

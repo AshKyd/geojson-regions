@@ -1,3 +1,15 @@
+<script lang="ts">
+	import { resolve } from '$app/paths';
+	import WikipediaAttribution from '#lib/components/WikipediaAttribution/WikipediaAttribution.svelte';
+
+	interface Props {
+		/** The Wikipedia article quoted on the page, if any; credited here. */
+		wikipedia?: { title: string; revision: number };
+	}
+
+	let { wikipedia }: Props = $props();
+</script>
+
 <footer class="page-footer">
 	<div class="row">
 		<div class="col-md-6">
@@ -8,9 +20,15 @@
 			<p class="p p-narrow">
 				These maps are sourced from
 				<a href="http://naturalearthdata.com">Natural Earth</a> and are in the public domain, so you are
-				free to use them in any way without attribution. Natural Earth shows de facto boundaries by default
-				according to who controls the territory, versus de jure. Choose a point of view above to see borders
-				as each country's own laws and conventions draw them.
+				free to use them in any way without attribution. Natural Earth draws de facto boundaries by default:
+				borders according to who controls the territory. Choose a point of view to see borders as each
+				country draws them itself.
+			</p>
+			{#if wikipedia}
+				<WikipediaAttribution {...wikipedia} />
+			{/if}
+			<p class="p">
+				<a href={resolve('/countries')}>Browse every country and point of view</a>.
 			</p>
 			<p class="p">
 				Site © 2026

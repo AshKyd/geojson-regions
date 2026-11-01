@@ -135,7 +135,7 @@ table {
   src: url("/work-sans/subset-WorkSans-Bold.woff2") format("woff2");
   font-weight: bold;
   font-style: normal;
-  font-display: block;
+  font-display: swap;
 }
 
 @font-face {
@@ -143,7 +143,7 @@ table {
   src: url("/work-sans/subset-WorkSans-ExtraBold.woff2") format("woff2");
   font-weight: bold;
   font-style: normal;
-  font-display: block;
+  font-display: swap;
 }
 
 @font-face {
@@ -151,7 +151,7 @@ table {
   src: url("/work-sans/subset-WorkSans-Black.woff2") format("woff2");
   font-weight: 900;
   font-style: normal;
-  font-display: block;
+  font-display: swap;
 }
 
 @font-face {
@@ -159,7 +159,7 @@ table {
   src: url("/work-sans/subset-WorkSans-ExtraLight.woff2") format("woff2");
   font-weight: 200;
   font-style: normal;
-  font-display: block;
+  font-display: swap;
 }
 
 @font-face {
@@ -167,7 +167,7 @@ table {
   src: url("/work-sans/subset-WorkSans-Light.woff2") format("woff2");
   font-weight: 300;
   font-style: normal;
-  font-display: block;
+  font-display: swap;
 }
 
 @font-face {
@@ -175,7 +175,7 @@ table {
   src: url("/work-sans/subset-WorkSans-Regular.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
-  font-display: block;
+  font-display: swap;
 }
 
 @font-face {
@@ -183,7 +183,7 @@ table {
   src: url("/work-sans/subset-WorkSans-Medium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
-  font-display: block;
+  font-display: swap;
 }
 
 @font-face {
@@ -191,7 +191,7 @@ table {
   src: url("/work-sans/subset-WorkSans-SemiBold.woff2") format("woff2");
   font-weight: 600;
   font-style: normal;
-  font-display: block;
+  font-display: swap;
 }
 
 @font-face {
@@ -199,7 +199,20 @@ table {
   src: url("/work-sans/subset-WorkSans-Thin.woff2") format("woff2");
   font-weight: 100;
   font-style: normal;
-  font-display: block;
+  font-display: swap;
+}
+
+/**
+ * Fallback face tuned to Work Sans metrics, so the swap from Arial to Work Sans barely moves layout.
+ * Overrides are approximations; tweak size-adjust if a shift remains.
+ */
+@font-face {
+  font-family: "Work Sans Fallback";
+  src: local("Arial");
+  size-adjust: 107%;
+  ascent-override: 87%;
+  descent-override: 23%;
+  line-gap-override: 0%;
 }
 
 /** svelte-akui's root paints its own background; keep the page gradient visible. */
@@ -213,9 +226,10 @@ table {
 /**
  * Per-area accent colours for svelte-akui. Its accent tokens are computed at the root from one hue,
  * so a different hue here means redeclaring the tokens (and the ones derived from them) locally.
- * Pink for the build button and the option panels.
+ * Pink for the build button, the country download buttons and the option panels.
  */
 .build-controls,
+.download-buttons,
 .resolution,
 .pov-regions {
   --accent-l: 0.55;
@@ -228,7 +242,7 @@ table {
   --akui-bg-accent-alpha: color-mix(in oklch, var(--akui-bg-accent) 25%, transparent);
   --akui-ring-focus: color-mix(in oklch, var(--akui-bg-accent) 40%, transparent);
 }
-[data-theme="dark"] :is(.build-controls, .resolution, .pov-regions) {
+[data-theme="dark"] :is(.build-controls, .download-buttons, .resolution, .pov-regions) {
   --accent-l: 0.62;
   --accent-l-hover: 0.55;
   --accent-l-focus: 0.48;
@@ -245,6 +259,7 @@ table {
 
 /* The build button shares the pink of the form controls beside it. */
 .build-controls,
+.download-buttons,
 .resolution,
 .pov-regions {
   --accent-hue: 350;
@@ -303,7 +318,7 @@ table {
   }
 }
 body {
-  font-family: "Work Sans", sans-serif;
+  font-family: "Work Sans", "Work Sans Fallback", sans-serif;
   font-weight: 300;
   padding: 1rem;
   background: var(--bg);
@@ -328,17 +343,22 @@ body {
   margin-top: 2rem;
 }
 .page-header__heading {
-  font-family: "Work Sans", sans-serif;
+  font-family: "Work Sans", "Work Sans Fallback", sans-serif;
   font-weight: 900;
   font-size: 2.8rem;
+  /* Explicit line height + min-height reserve the heading's box so the font swap can't resize it. */
+  line-height: 1.15;
+  min-height: 1.15em;
   text-transform: uppercase;
   letter-spacing: 0.2rem;
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
 }
 .page-header__intro {
-  font-family: "Work Sans", sans-serif;
+  font-family: "Work Sans", "Work Sans Fallback", sans-serif;
   font-size: 2.8rem;
+  line-height: 1.15;
+  min-height: 1.15em;
   text-transform: uppercase;
   font-weight: 100;
 }
@@ -377,6 +397,12 @@ body {
   color: white;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   font-weight: 300;
+}
+/* Fixed line box so the header's height is the same before and after the font swap. */
+.app-header h2 {
+  font-family: "Work Sans", "Work Sans Fallback", sans-serif;
+  line-height: 1.5;
+  min-height: 1.5em;
 }
 
 /* The background belongs to the whole column so it always fills the row, whatever the panels' heights. */
@@ -524,4 +550,60 @@ h3 {
     display: flex;
     gap: 1rem;
   }
+}
+
+/** Browse pages (/countries): a panel holding intro text and a table. */
+.panel {
+  padding: 1rem;
+  background: var(--app-bg);
+  color: var(--app-text);
+}
+.panel a,
+.country .side a {
+  color: inherit;
+}
+.app-header a {
+  color: inherit;
+}
+/*
+ * Short lists of links, separated by bullets that only appear between items on the same line.
+ * Each item carries its own bullet in its left padding, then a negative left margin pulls it
+ * back over the previous item's trailing gap. An item that wraps to the start of a new line has
+ * its bullet pushed past the list's left edge, where overflow clips it.
+ */
+.inline-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  overflow: hidden;
+}
+.inline-list li {
+  position: relative;
+  margin: 0 1.5em 0 -1.5em;
+  padding-left: 1.5em;
+}
+.inline-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  width: 1.5em;
+  text-align: center;
+  opacity: 0.6;
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.data-table th,
+.data-table td {
+  padding: 0.4rem 0.75rem 0.4rem 0;
+  text-align: left;
+  border-bottom: 1px solid color-mix(in oklch, currentColor 15%, transparent);
+}
+.data-table th {
+  font-weight: 600;
+}
+.data-table .numeric {
+  text-align: right;
 }
